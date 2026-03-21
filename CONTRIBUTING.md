@@ -129,7 +129,8 @@ cargo clippy --fix
 - Use `cargo doc --open` to preview documentation
 
 Example:
-```rust
+
+````rust
 /// Calculates the entanglement of a boolean function.
 ///
 /// # Arguments
@@ -149,11 +150,12 @@ Example:
 pub fn calculate_entanglement(&self, partition: &[bool]) -> f64 {
     // Implementation
 }
-```
+````
 
 ## Pull Request Process
 
 1. **Fork the repository** and create your branch from `main`:
+
    ```bash
    git checkout -b feature/my-new-feature
    ```
@@ -165,6 +167,7 @@ pub fn calculate_entanglement(&self, partition: &[bool]) -> f64 {
    - Update documentation as needed
 
 3. **Ensure all tests pass**:
+
    ```bash
    cargo test --all
    cargo clippy --all-targets --all-features
@@ -194,7 +197,7 @@ When reporting issues, please include:
 2. **Steps to reproduce**: Detailed steps to reproduce the issue
 3. **Expected behavior**: What you expected to happen
 4. **Actual behavior**: What actually happened
-5. **Environment**: 
+5. **Environment**:
    - Rust version (`rustc --version`)
    - Operating system
    - Relevant dependencies
@@ -206,6 +209,7 @@ When reporting issues, please include:
 The entanglement calculation returns incorrect values for certain partitions.
 
 **Steps to Reproduce**
+
 1. Create a majority function with n=4
 2. Calculate entanglement with partition [true, false, true, false]
 3. Observe incorrect value
@@ -217,6 +221,7 @@ Should return entanglement value of approximately 2.5
 Returns 0.0
 
 **Environment**
+
 - Rust version: 1.70.0
 - OS: Ubuntu 22.04
 - fbool-entanglement version: 0.1.0
