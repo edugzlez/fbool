@@ -1,0 +1,45 @@
+[workspace]
+resolver = "2"
+members = [
+    "fbool-cli",
+    "fbool-py",
+    "clique_solver",
+    "fbool", "optimal5",
+]
+
+[workspace.dependencies]
+# Core dependencies
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = { version = "2.0", features = ["serde"] }
+clap = { version = "4.5", features = ["derive"] }
+
+# Async runtime
+tokio = { version = "1.45", features = ["full"] }
+tokio-stream = "0.1"
+futures = "0.3"
+
+# Math and algorithms
+nalgebra = "0.33"
+ndarray = "0.17"
+rayon = "1.11"
+itertools = "0.14"
+
+# Utilities
+rand = "0.8"
+primality = "0.1"
+fwht = "0.1"
+kdam = "0.6"
+tqdm = "0.8"
+petgraph = "0.8"
+
+# Build dependencies
+cc = "1.0"
+
+# Python bindings
+pyo3 = { version = "0.24", features = ["extension-module"] }
+numpy = "0.24"
+
+# Testing
+assert_cmd = "2.0"
+predicates = "3.0"

@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "fbool: A Rust library for Boolean function entanglement analysis"
+version: 0.1.0
+date-released: 2025-01-01
+license: MIT
+repository-code: "https://github.com/edugzlez/fbool"
+authors:
+  - family-names: "González"
+    given-names: "Eduardo"
+    email: "edugonzalezvaq@gmail.com"
+    orcid: ""
+  - family-names: "Maurizio Paul"
+    given-names: "Ricardo"
+    email: "memaurifu14@gmail.com"
+    orcid: ""
+abstract: >
+  fbool is a Rust library for analyzing Boolean functions, with a focus
+  on entanglement, information-theoretic measures, and circuit complexity.
+  It implements entanglement and min-max entanglement via bipartitions of
+  variables, Shannon entropy of partitions, influence, sensitivity, spectral
+  analysis, frontier structure, and certificate complexity. Python bindings
+  and a CLI tool are included.
+keywords:
+  - boolean functions
+  - entanglement
+  - information theory
+  - circuit complexity
+  - Rust

@@ -1,0 +1,14 @@
+[package]
+name = "optimal5"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "optimal5"
+path = "src/lib.rs"
+
+[dependencies]
+fbool = { version = "0.1.0", path = "../fbool" }
+
+[build-dependencies]
+cc = "1.0"

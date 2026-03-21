@@ -1,0 +1,50 @@
+# Rust build artifacts
+/target
+Cargo.lock
+
+# Data and temporary files
+/data
+*.bin
+*.tmp
+
+# Python
+/.venv
+fbool-py/.venv
+fbool-py/.cargo
+**/.pytest_cache
+**/__pycache__/
+*.pyc
+*.pyo
+
+# IDE and Editor files
+.shinchan/
+.raw/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Documentation
+node_modules/
+doc_build/
+
+# Media and output
+*.png
+*.jpg
+*.jpeg
+
+# Logs and debug
+error.txt
+*.log
+
+# Example and test files
+example.py
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
