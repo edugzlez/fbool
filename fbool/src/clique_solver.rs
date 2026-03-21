@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use itertools::Itertools;
 
 /// Función para convertir índice lineal a par de nodos
