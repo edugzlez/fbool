@@ -1,5 +1,10 @@
 # fbool
 
+> ⚠️ **Stability Notice**  
+> This library is currently under active development and **its public API is not stable**.  
+> Any version **`< 1.0.0` may introduce breaking changes** without a major version bump.  
+> If you depend on specific behavior or interfaces, consider pinning to an exact commit or tag.
+
 A Rust library for analyzing **Boolean functions**, with a focus on **entanglement**, information-theoretic measures, and circuit complexity. Includes Python bindings and a command-line interface.
 
 This library was developed to support research on entanglement measures for Boolean functions. If you use it in your work, please cite the associated paper (see [Citation](#citation)).
@@ -90,28 +95,28 @@ fn main() {
 
 `FValue` provides constructors for many classical families:
 
-| Constructor | Description |
-|---|---|
-| `FValue::majority(n)` | Majority function |
-| `FValue::parity(n)` | Parity (XOR) function |
-| `FValue::primality(n)` | Primality test |
-| `FValue::zero_search(n)` | Zero-search function |
-| `FValue::sum(n)` | Arithmetic sum |
-| `FValue::product(n)` | Arithmetic product |
-| `FValue::gcd(n)` | GCD function |
-| `FValue::clique(n)` | Clique decision function |
+| Constructor              | Description              |
+| ------------------------ | ------------------------ |
+| `FValue::majority(n)`    | Majority function        |
+| `FValue::parity(n)`      | Parity (XOR) function    |
+| `FValue::primality(n)`   | Primality test           |
+| `FValue::zero_search(n)` | Zero-search function     |
+| `FValue::sum(n)`         | Arithmetic sum           |
+| `FValue::product(n)`     | Arithmetic product       |
+| `FValue::gcd(n)`         | GCD function             |
+| `FValue::clique(n)`      | Clique decision function |
 
 ### Metrics
 
-| Trait | Methods |
-|---|---|
-| `Entanglement` | `entanglement()`, `entanglement_sets()`, `minmax_entanglement()`, `minmax_entanglement_sets()` |
-| `Entropy` | `entropy()`, `entropy_sets()` |
-| `Sensitivity` | `sensitivity()` |
-| `Influence` | `influence()` |
-| `CertificateComplexity` | `certificate_complexity()` |
-| `Frontier` | `frontier_graph()` |
-| `WithMinimalGates` | `minimal_gates()` (5-variable functions only) |
+| Trait                   | Methods                                                                                        |
+| ----------------------- | ---------------------------------------------------------------------------------------------- |
+| `Entanglement`          | `entanglement()`, `entanglement_sets()`, `minmax_entanglement()`, `minmax_entanglement_sets()` |
+| `Entropy`               | `entropy()`, `entropy_sets()`                                                                  |
+| `Sensitivity`           | `sensitivity()`                                                                                |
+| `Influence`             | `influence()`                                                                                  |
+| `CertificateComplexity` | `certificate_complexity()`                                                                     |
+| `Frontier`              | `frontier_graph()`                                                                             |
+| `WithMinimalGates`      | `minimal_gates()` (5-variable functions only)                                                  |
 
 ---
 
@@ -161,21 +166,21 @@ print("Truth table shape:", tt.shape)
 
 ### FBool API
 
-| Method | Description |
-|---|---|
-| `FBool(repr)` | Construct from a truth-table list |
-| `FBool.from_number(n, num_vars)` | Construct from integer encoding |
-| `FBool.majority(n)` | Majority function |
-| `FBool.parity(n)` | Parity function |
-| `FBool.primality(n)` | Primality function |
-| `f.entanglement()` | Minimum entanglement value |
-| `f.entanglement_sets()` | All bipartition entanglement values |
-| `f.minmax_entanglement()` | Minimum max-entanglement value |
-| `f.entropy()` | Minimum entropy value |
-| `f.entropy_sets()` | All bipartition entropy values |
-| `f.sensitivity()` | Sensitivity measure |
-| `f.truth_table()` | Truth table as `numpy.ndarray` |
-| `f.save(path)` / `FBool.load(path)` | Binary serialization |
+| Method                              | Description                         |
+| ----------------------------------- | ----------------------------------- |
+| `FBool(repr)`                       | Construct from a truth-table list   |
+| `FBool.from_number(n, num_vars)`    | Construct from integer encoding     |
+| `FBool.majority(n)`                 | Majority function                   |
+| `FBool.parity(n)`                   | Parity function                     |
+| `FBool.primality(n)`                | Primality function                  |
+| `f.entanglement()`                  | Minimum entanglement value          |
+| `f.entanglement_sets()`             | All bipartition entanglement values |
+| `f.minmax_entanglement()`           | Minimum max-entanglement value      |
+| `f.entropy()`                       | Minimum entropy value               |
+| `f.entropy_sets()`                  | All bipartition entropy values      |
+| `f.sensitivity()`                   | Sensitivity measure                 |
+| `f.truth_table()`                   | Truth table as `numpy.ndarray`      |
+| `f.save(path)` / `FBool.load(path)` | Binary serialization                |
 
 ---
 
@@ -211,7 +216,7 @@ fbool-cli encode primality -n 5 -o primality_5.bin
 
 ## Building
 
-**Requirements:** Rust 1.70+, a C++ compiler (for `optimal5`), Python 3.11+ (for Python bindings).
+**Requirements:** Rust 1.70+, a GCC++ compiler (for `optimal5`), Python 3.11+ (for Python bindings).
 
 ```bash
 # Build the full workspace
@@ -238,18 +243,11 @@ If you use this software in academic work, please cite:
 
 ```bibtex
 @software{fbool,
-  author  = {Eduardo Gonz\'{a}lez and Ricardo Maurizio Paul},
-  title   = {fbool: A Rust library for Boolean function entanglement analysis},
-  year    = {2025},
+  author  = {Eduardo Gonz\'{a}lez-Vaquero and Ricardo Maurizio Paul},
+  title   = {fbool: A Rust library for Boolean functions analysis},
+  year    = {2026},
   url     = {https://github.com/edugzlez/fbool}
 }
 ```
 
 The associated paper citation will be added upon publication.
-
----
-
-## Authors
-
-- **Eduardo González** — [edugzlez](https://github.com/edugzlez)
-- **Ricardo Maurizio Paul**
