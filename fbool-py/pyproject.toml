@@ -1,6 +1,25 @@
 [project]
-name = "fbool_py"
+name = "fbool"
 version = "0.1.0"
+description = "Python bindings for fbool: Boolean function analysis with entanglement, entropy, sensitivity and circuit complexity"
+readme = "../README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Eduardo González-Vaquero", email = "edugonzalezvaq@gmail.com" },
+    { name = "Ricardo Maurizio Paul", email = "memaurifu14@gmail.com" },
+]
+keywords = ["boolean", "entanglement", "information-theory", "circuit-complexity", "logic"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
 dependencies = [
     "numpy>=2.2.5",
 ]

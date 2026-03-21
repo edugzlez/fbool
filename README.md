@@ -28,7 +28,7 @@ fbool/                 # Core Rust library
 fbool-cli/             # Command-line interface
 fbool-py/              # Python bindings (PyO3 + maturin)
 clique_solver/         # CLIQUE-problem solver used internally
-optimal5/              # Minimal-gate optimizer for 5-variable functions (Rust + C++)
+optimal5/              # Rust wrapper around Adam P. Goucher's optimal5 C++ engine (minimal-gate optimizer)
 ```
 
 ---
@@ -251,5 +251,11 @@ The associated paper citation will be added upon publication.
 
 ## Authors
 
-- **Eduardo González** — [edugzlez](https://github.com/edugzlez)
+- **Eduardo González-Vaquero** — [edugzlez](https://github.com/edugzlez)
 - **Ricardo Maurizio Paul**
+
+---
+
+## Acknowledgements
+
+The `optimal5` crate is a Rust wrapper around the [optimal5](https://gitlab.com/apgoucher/optimal5) C++ engine by **Adam P. Goucher**, used under the MIT License. The original engine computes the minimum number of logic gates required to implement any Boolean function of up to 5 variables using a precomputed exhaustive lookup table.

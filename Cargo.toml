@@ -3,8 +3,8 @@ resolver = "2"
 members = [
     "fbool-cli",
     "fbool-py",
-    "clique_solver",
-    "fbool", "optimal5",
+    "fbool",
+    "optimal5",
 ]
 
 [workspace.dependencies]

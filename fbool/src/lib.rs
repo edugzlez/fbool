@@ -4,6 +4,8 @@
 //! evaluating boolean expressions.
 
 pub mod auxiliar;
+#[cfg(feature = "clique")]
+pub(crate) mod clique_solver;
 pub mod examples;
 #[cfg(feature = "fmatrix")]
 pub mod fmulti;

@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
-use clique_solver::find_clique;
+#[cfg(feature = "clique")]
+use crate::clique_solver::find_clique;
 use futures::{stream, StreamExt};
 use kdam::{tqdm, BarExt};
 use primality::IsPrime;
@@ -49,6 +50,7 @@ impl FValue<bool> {
         FValue::new(repr)
     }
 
+    #[cfg(feature = "clique")]
     pub fn clique(n_vars: usize) -> Self {
         let n = n_vars * (n_vars + 1) / 2; // Number of edges in a complete graph with n nodes
         let repr = (0usize..(1 << n))
