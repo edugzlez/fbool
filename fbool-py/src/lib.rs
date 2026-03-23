@@ -2,7 +2,6 @@ use fbool::certificate::CertificateComplexity;
 use fbool::entanglement::{Entanglement, Entropy, EquanimityImportance};
 use fbool::frontier::Frontier;
 use fbool::fvalue::FValue;
-use fbool::sensitivity::Sensitivity;
 use numpy::ndarray::{Array, Dim};
 use numpy::{PyArray, ToPyArray};
 use optimal5::WithMinimalGates;
@@ -245,8 +244,20 @@ impl FBool {
         Ok(self.repr.max_sensitivity())
     }
 
+    fn min_sensitivity(&self) -> PyResult<u32> {
+        Ok(self.repr.min_sensitivity())
+    }
+
     fn mean_sensitivity(&self) -> PyResult<f32> {
         Ok(self.repr.mean_sensitivity())
+    }
+
+    fn var_sensitivity(&self) -> PyResult<f32> {
+        Ok(self.repr.var_sensitivity())
+    }
+
+    fn entropy_sensitivity(&self) -> PyResult<f32> {
+        Ok(self.repr.entropy_sensitivity())
     }
 
     fn spectral_entropy(&self) -> PyResult<f32> {
@@ -271,6 +282,10 @@ impl FBool {
 
     fn certificate_complexity(&self) -> PyResult<u32> {
         Ok(self.repr.certificate_complexity())
+    }
+
+    fn vector_sensitivity(&self) -> PyResult<Vec<u32>> {
+        Ok(self.repr.vector_sensitivity())
     }
 }
 

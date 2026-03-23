@@ -343,6 +343,26 @@ class FBool:
         """
         ...
 
+    def var_sensitivity(self) -> float:
+        """
+        Calculate the mean sensitivity of the FBool object.
+
+        Returns:
+            (float):
+                The mean sensitivity of the FBool object.
+        """
+        ...
+
+    def entropy_sensitivity(self) -> float:
+        """
+        Calculate the mean sensitivity of the FBool object.
+
+        Returns:
+            (float):
+                The mean sensitivity of the FBool object.
+        """
+        ...
+
     def spectral_entropy(self) -> float:
         """
         Calculate the spectral entropy of the FBool object.
