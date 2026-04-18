@@ -1,0 +1,2 @@
+model,status,train_weighted,accuracy_w,f1_macro_w,precision_macro_w,recall_macro_w,balanced_accuracy_w,f1_binary_w,fit_seconds,error
+pytorch_mlp_smc2026,ok,True,0.7649464387267206,0.7608736029865055,0.7663452707893981,0.7593606420668676,0.7593606420668676,0.7296658709928883,8.654954121000628,
