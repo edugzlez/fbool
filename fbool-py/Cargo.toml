@@ -12,6 +12,6 @@ name = "fbool"
 pyo3 = { version = "0.24.2", features = ["extension-module", "abi3-py311"] }
 fbool = { path = "../fbool" }
 numpy = "0.24.0"
-bincode = "2.0.1"
+bincode = "3.0.0"
 optimal5 = { version = "0.1.0", path = "../optimal5" }
 petgraph = "0.8.2"
