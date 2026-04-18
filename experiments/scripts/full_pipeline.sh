@@ -34,7 +34,7 @@ echo ""
 echo -e "${BLUE}[STEP 2]${NC} Computing Boolean function metrics..."
 uv run cli.py experiments-bin compute-metrics \
   -i "$OUTPUT_DIR/npn_table.parquet" \
-  -o "$OUTPUT_DIR/npn_with_metrics.parquet" \
+  -o "$OUTPUT_DIR/dataset.parquet" \
   -m all
 echo -e "${GREEN}✓ Metrics computed${NC}"
 echo ""
@@ -42,7 +42,7 @@ echo ""
 # Step 3: Bayes optimal analysis
 echo -e "${BLUE}[STEP 3]${NC} Computing Bayes optimal upper bounds..."
 uv run cli.py experiments-bin bayes-optimal \
-  --input "$OUTPUT_DIR/npn_with_metrics.parquet" \
+  --input "$OUTPUT_DIR/dataset.parquet" \
   --target min_gates \
   --binary \
   --threshold 9 \
@@ -55,7 +55,7 @@ echo ""
 # Step 4: Multiclass Bayes optimal
 echo -e "${BLUE}[STEP 4]${NC} Computing Bayes optimal (multiclass - all gate counts)..."
 uv run cli.py experiments-bin bayes-optimal \
-  --input "$OUTPUT_DIR/npn_with_metrics.parquet" \
+  --input "$OUTPUT_DIR/dataset.parquet" \
   --target min_gates \
   --metrics entanglement,entanglement_entropy,influence,spectral_entropy,repetitiveness,nolinearity,entropy,sensitivity,certificate_complexity,counting,degree \
   --output-csv "$OUTPUT_DIR/bayes_optimal_multiclass.csv"
@@ -65,7 +65,7 @@ echo ""
 # Step 5: Orthogonality analysis (binary)
 echo -e "${BLUE}[STEP 5]${NC} Analyzing metric orthogonality (binary classification)..."
 uv run cli.py experiments-bin orthogonality \
-  --input "$OUTPUT_DIR/npn_with_metrics.parquet" \
+  --input "$OUTPUT_DIR/dataset.parquet" \
   --target min_gates \
   --binary \
   --threshold 9 \
@@ -78,7 +78,7 @@ echo ""
 # Step 6: Orthogonality analysis (multiclass)
 echo -e "${BLUE}[STEP 6]${NC} Analyzing metric orthogonality (multiclass)..."
 uv run cli.py experiments-bin orthogonality \
-  --input "$OUTPUT_DIR/npn_with_metrics.parquet" \
+  --input "$OUTPUT_DIR/dataset.parquet" \
   --target min_gates \
   --metrics entanglement,entanglement_entropy,influence,spectral_entropy,repetitiveness,nolinearity,entropy,sensitivity,certificate_complexity,counting,degree \
   --output-csv "$OUTPUT_DIR/orthogonality_multiclass.csv" \
