@@ -752,6 +752,9 @@ void load_chains(chainstore &chains, std::string filename) {
 }
 
 void load_chains_from_binary(chainstore &chains, std::vector<uint8_t> bv) {
+  // Initialise with primitive functions (constant and identity), same as file loader.
+  chains[0x00000000].output = 0;
+  chains[0x0000ffff].output = 2;
   bytes2gv(bv, chains);
 }
 

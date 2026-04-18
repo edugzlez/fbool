@@ -1,0 +1,2 @@
+input_file,features,mode,target_rule,count_column,correct_mass,max_accuracy_percent
+"/home/eduardito/workspace/fbool-new/experiments/results/dataset.parquet","entanglement, entropy, spectral_entropy, sensitivity","binary","min_gates <= 9","count",3152172608,73.392238

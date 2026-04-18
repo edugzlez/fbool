@@ -19,12 +19,18 @@ pub mod metrics;
 pub use metrics::certificate;
 #[cfg(feature = "entanglement")]
 pub use metrics::entanglement;
+#[cfg(feature = "entanglement")]
+pub use metrics::fragmentation;
 #[cfg(feature = "frontier")]
 pub use metrics::frontier;
 pub use metrics::influence;
 pub use metrics::sensitivity;
 pub use metrics::spectral;
+pub use metrics::structure;
 
 // Re-export entanglement items at the top level for convenience.
 #[cfg(feature = "entanglement")]
 pub use metrics::entanglement::*;
+#[cfg(feature = "entanglement")]
+pub use metrics::fragmentation::*;
+pub use metrics::structure::*;

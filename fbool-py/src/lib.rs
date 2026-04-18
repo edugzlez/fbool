@@ -3,6 +3,7 @@ use fbool::entanglement::{Entanglement, Entropy, EquanimityImportance};
 use fbool::frontier::Frontier;
 use fbool::fvalue::FValue;
 use fbool::sensitivity::Sensitivity;
+use fbool::Fragmentation;
 use numpy::ndarray::{Array, Dim};
 use numpy::{PyArray, ToPyArray};
 use optimal5::WithMinimalGates;
@@ -140,6 +141,38 @@ impl FBool {
     fn entropy(&self) -> PyResult<f32> {
         let ent = self.repr.entropy();
         Ok(ent)
+    }
+    fn fragmentation_coefficient(&self, vars: Vec<usize>) -> PyResult<f32> {
+        Ok(self.repr.fragmentation_coefficient(&vars))
+    }
+
+    fn fragmentation_k(&self, k: usize) -> PyResult<f32> {
+        Ok(self.repr.fragmentation_k(k))
+    }
+
+    fn fragmentation_spectrum(&self) -> PyResult<Vec<f32>> {
+        Ok(self.repr.fragmentation_spectrum())
+    }
+
+    fn restriction_signature(&self) -> PyResult<Vec<f32>> {
+        Ok(self.repr.restriction_signature())
+    }
+
+    fn fragmentation_profile(&self) -> PyResult<Vec<f32>> {
+        Ok(self.repr.fragmentation_profile())
+    }
+
+    fn fragmentation_peak(&self) -> PyResult<(usize, f32)> {
+        let peak = self.repr.fragmentation_peak();
+        Ok((peak.k_star, peak.s_max))
+    }
+
+    fn fragmentation_delta(&self) -> PyResult<Vec<f32>> {
+        Ok(self.repr.fragmentation_delta())
+    }
+
+    fn fragmentation_delta2(&self) -> PyResult<Vec<f32>> {
+        Ok(self.repr.fragmentation_delta2())
     }
 
     fn equanimity_importance(&self) -> PyResult<f32> {
