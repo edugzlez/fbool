@@ -38,7 +38,7 @@ cc = "1.0"
 
 # Python bindings
 pyo3 = { version = "0.24", features = ["extension-module"] }
-numpy = "0.24"
+numpy = "0.28"
 
 # Testing
 assert_cmd = "2.0"
