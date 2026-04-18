@@ -4,7 +4,7 @@ members = [
     "fbool-cli",
     "fbool-py",
     "fbool",
-    "optimal5",
+    "optimal5", "fbool-experiments",
 ]
 
 [workspace.dependencies]

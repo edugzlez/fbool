@@ -50,9 +50,16 @@ pub struct SubsetIterator {
 impl SubsetIterator {
     pub fn new(n: usize) -> Self {
         let m = n / 2;
-        Self {
-            _n: n,
-            _comb: (1..n).combinations(m - 1), // Tomamos m-1 elementos sin contar el 0
+        if n % 2 == 0 {
+            Self {
+                _n: n,
+                _comb: (1..n).combinations(m - 1),
+            }
+        } else {
+            Self {
+                _n: n,
+                _comb: (0..n).combinations(m),
+            }
         }
     }
 
@@ -71,8 +78,10 @@ impl Iterator for SubsetIterator {
     fn next(&mut self) -> Option<Self::Item> {
         match self._comb.next() {
             Some(mut set1) => {
-                set1.insert(0, 0);
-                let set2 = (1..self._n)
+                if self._n % 2 == 0 {
+                    set1.insert(0, 0);
+                }
+                let set2 = (0..self._n)
                     .filter(|x| !set1.contains(x))
                     .collect::<Vec<_>>();
                 Some((set1, set2))

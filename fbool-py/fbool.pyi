@@ -405,3 +405,35 @@ class FBool:
                 The certificate complexity of the FBool object.
         """
         ...
+
+    def fragmentation_coefficient(self, vars: list[int]) -> float:
+        """Return the local fragmentation coefficient F(f, S)."""
+        ...
+
+    def fragmentation_k(self, k: int) -> float:
+        """Return S_k(f), the average fragmentation at subset size k."""
+        ...
+
+    def fragmentation_spectrum(self) -> list[float]:
+        """Return the full fragmentation spectrum (S_0, ..., S_n)."""
+        ...
+
+    def restriction_signature(self) -> list[float]:
+        """Alias of fragmentation_spectrum()."""
+        ...
+
+    def fragmentation_profile(self) -> list[float]:
+        """Alias of fragmentation_spectrum()."""
+        ...
+
+    def fragmentation_peak(self) -> tuple[int, float]:
+        """Return (k*, Smax) for the fragmentation spectrum."""
+        ...
+
+    def fragmentation_delta(self) -> list[float]:
+        """Return first discrete derivative of the spectrum."""
+        ...
+
+    def fragmentation_delta2(self) -> list[float]:
+        """Return second discrete derivative of the spectrum."""
+        ...

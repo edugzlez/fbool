@@ -1,0 +1,33 @@
+[package]
+name = "fbool-experiments"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "npn-create"
+path = "src/npn_create.rs"
+
+
+[[bin]]
+name = "compute-metrics"
+path = "src/compute_metrics.rs"
+
+[[bin]]
+name = "bayes-optimal"
+path = "src/bayes_optimal.rs"
+
+[[bin]]
+name = "orthogonality"
+path = "src/orthogonality.rs"
+
+[dependencies]
+clap = { version = "4.5.39", features = ["derive"] }
+comfy-table = "7.2.1"
+fbool = { version = "0.1.0", path = "../fbool" }
+indicatif = { version = "0.18.4", features = ["rayon"] }
+optimal5 = { version = "0.1.0", path = "../optimal5" }
+polars = { version = "0.53.0", features = ["parquet", "lazy"] }
+parquet = "53.3.0"
+rayon.workspace = true
+serde.workspace = true
+serde_json.workspace = true
