@@ -400,11 +400,11 @@ fn main() -> PolarsResult<()> {
         ));
     }
 
-    let weight_column = Some(args.count_column.as_str());
+    let weight_column = args.count_column.as_str();
 
     let metrics = selected_metrics(&target_column, &args.count_column, &args.metrics)?;
     ensure_columns_exist(&prepared_df, &metrics)?;
-    ensure_columns_exist(&prepared_df, &[target_column.clone()])?;
+    ensure_columns_exist(&prepared_df, std::slice::from_ref(&target_column))?;
 
     if metrics.len() < 2 {
         return Err(PolarsError::ComputeError(
@@ -437,7 +437,7 @@ fn main() -> PolarsResult<()> {
                 metric_a,
                 metric_b,
                 &target_column,
-                weight_column,
+                Some(weight_column),
             )?;
 
             reports.push(report);
@@ -452,10 +452,7 @@ fn main() -> PolarsResult<()> {
     println!("Target column              : {}", args.target);
     println!("Target label                : {}", target_label);
     println!("Target used in analysis     : {}", target_column);
-    println!(
-        "Weight column               : {}",
-        weight_column.unwrap_or("(row count)")
-    );
+    println!("Weight column               : {}", weight_column);
     println!("Metric columns             : {}", metrics.join(", "));
     println!("Total pair reports          : {}", reports.len());
     println!("=================================================================\n");

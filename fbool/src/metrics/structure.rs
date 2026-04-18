@@ -24,7 +24,7 @@ impl StructuralMetrics for FValue<bool> {
         const BLOCK_SIZE: usize = 4;
 
         let repr = self.repr();
-        if repr.len() % BLOCK_SIZE != 0 {
+        if !repr.len().is_multiple_of(BLOCK_SIZE) {
             return 0;
         }
 

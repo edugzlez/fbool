@@ -50,7 +50,7 @@ pub struct SubsetIterator {
 impl SubsetIterator {
     pub fn new(n: usize) -> Self {
         let m = n / 2;
-        if n % 2 == 0 {
+        if n.is_multiple_of(2) {
             Self {
                 _n: n,
                 _comb: (1..n).combinations(m - 1),
@@ -78,7 +78,7 @@ impl Iterator for SubsetIterator {
     fn next(&mut self) -> Option<Self::Item> {
         match self._comb.next() {
             Some(mut set1) => {
-                if self._n % 2 == 0 {
+                if self._n.is_multiple_of(2) {
                     set1.insert(0, 0);
                 }
                 let set2 = (0..self._n)

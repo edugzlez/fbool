@@ -114,7 +114,7 @@ define_metrics!(
         struct: NolinearityMetric,
         columns: ["nolinearity"],
         types: [DataType::UInt32],
-        compute: |f| vec![AnyValue::UInt32(f.no_linearity() as u32)]
+        compute: |f| vec![AnyValue::UInt32(f.no_linearity())]
     },
     SimpleEntropy => {
         struct: EntropyMetric,
@@ -126,7 +126,7 @@ define_metrics!(
         struct: SensitivityMetric,
         columns: ["sensitivity"],
         types: [DataType::UInt32],
-        compute: |f| vec![AnyValue::UInt32(f.max_sensitivity() as u32)]
+        compute: |f| vec![AnyValue::UInt32(f.max_sensitivity())]
     },
     CertificateComplexity => {
         struct: CertificateComplexityMetric,

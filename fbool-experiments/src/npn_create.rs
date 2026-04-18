@@ -52,14 +52,14 @@ fn main() {
         .progress_with(pb)
         .map(process_fbool)
         .fold(
-            || HashMap::new(), // Inicializador de acumulador local por hilo
+            HashMap::new, // Inicializador de acumulador local por hilo
             |mut acc, npn| {
                 *acc.entry(npn as u32).or_insert(0) += 1;
                 acc
             },
         )
         .reduce(
-            || HashMap::new(), // Combinador de resultados
+            HashMap::new, // Combinador de resultados
             |mut map1, map2| {
                 for (k, v) in map2 {
                     *map1.entry(k).or_insert(0) += v;
