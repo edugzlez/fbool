@@ -9,7 +9,7 @@ name = "fbool"
 
 
 [dependencies]
-pyo3 = { version = "0.24.2", features = ["extension-module", "abi3-py311"] }
+pyo3 = { version = "0.28.2", features = ["extension-module", "abi3-py311"] }
 fbool = { path = "../fbool" }
 numpy = "0.24.0"
 bincode = "2.0.1"

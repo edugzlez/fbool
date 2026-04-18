@@ -37,7 +37,7 @@ petgraph = "0.8"
 cc = "1.0"
 
 # Python bindings
-pyo3 = { version = "0.24", features = ["extension-module"] }
+pyo3 = { version = "0.28", features = ["extension-module"] }
 numpy = "0.24"
 
 # Testing
