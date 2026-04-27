@@ -15,9 +15,11 @@ jobs:
       id-token: write # trusted publishing
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - name: Publish fbool
-        run: cargo publish -p fbool
+      - uses: rust-lang/crates-io-auth-action@v1
+        id: auth
+      - run: cargo publish -p fbool
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
 
   # ── PyPI wheels ────────────────────────────────────────────────────────────
   build-wheels:
