@@ -3,7 +3,7 @@ resolver = "2"
 members = ["fbool-cli", "fbool-py", "fbool", "fbool-experiments"]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.2.0"
 
 [workspace.dependencies]
 # Core dependencies
