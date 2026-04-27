@@ -2,11 +2,11 @@ use fbool::certificate::CertificateComplexity;
 use fbool::entanglement::{Entanglement, Entropy, EquanimityImportance};
 use fbool::frontier::Frontier;
 use fbool::fvalue::FValue;
+use fbool::optimal5::WithMinimalGates;
 use fbool::sensitivity::Sensitivity;
 use fbool::Fragmentation;
 use numpy::ndarray::{Array, Dim};
 use numpy::{PyArray, ToPyArray};
-use optimal5::WithMinimalGates;
 use petgraph::graph::UnGraph;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
@@ -228,11 +228,6 @@ impl FBool {
     fn minimal_gates(&self) -> PyResult<Option<u32>> {
         let minimal_gates = self.repr.minimal_gates();
         Ok(minimal_gates)
-    }
-
-    fn minimal_depth(&self) -> PyResult<Option<u32>> {
-        let minimal_depth = self.repr.minimal_depth();
-        Ok(minimal_depth)
     }
 
     fn frontier_size(&mut self) -> PyResult<u32> {

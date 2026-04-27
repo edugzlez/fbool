@@ -1,6 +1,6 @@
 [package]
 name = "fbool"
-version = "0.1.0"
+version.workspace = true
 edition = "2021"
 description = "Boolean function analysis library: entanglement, entropy, sensitivity, spectral analysis, frontier, and circuit complexity"
 license = "MIT"
@@ -8,16 +8,27 @@ repository = "https://github.com/edugzlez/fbool"
 homepage = "https://github.com/edugzlez/fbool"
 documentation = "https://docs.rs/fbool"
 readme = "../README.md"
-keywords = ["boolean", "entanglement", "information-theory", "circuit-complexity", "spectral"]
+keywords = [
+    "boolean",
+    "entanglement",
+    "information-theory",
+    "circuit-complexity",
+    "spectral",
+]
 categories = ["algorithms", "mathematics", "science"]
-authors = ["Eduardo González-Vaquero <edugonzalezvaq@gmail.com>", "Ricardo Maurizio Paul <memaurifu14@gmail.com>"]
+authors = [
+    "Eduardo González-Vaquero <edugonzalezvaq@gmail.com>",
+    "Ricardo Maurizio Paul <memaurifu14@gmail.com>",
+]
+
 
 [features]
-default = ["entanglement", "frontier", "fmatrix", "clique"]
+default = ["entanglement", "frontier", "optimal5"]
 entanglement = []
 frontier = ["dep:petgraph"]
 fmatrix = []
 clique = []
+optimal5 = []
 
 [dependencies]
 primality.workspace = true
@@ -35,3 +46,6 @@ bincode.workspace = true
 fwht.workspace = true
 rayon.workspace = true
 petgraph = { workspace = true, optional = true }
+
+[build-dependencies]
+cc = "1.0"

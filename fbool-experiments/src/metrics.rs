@@ -3,9 +3,9 @@
 use clap::ValueEnum;
 use fbool::certificate::CertificateComplexity;
 use fbool::fvalue::FValue;
+use fbool::optimal5::WithMinimalGates;
 use fbool::sensitivity::Sensitivity;
 use fbool::{Entanglement, Entropy, Fragmentation, StructuralMetrics};
-use optimal5::WithMinimalGates;
 use polars::prelude::*;
 
 pub trait Metric: Sync + Send {

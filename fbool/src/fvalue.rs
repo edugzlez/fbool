@@ -149,7 +149,7 @@ impl<Output: Send + Sync + Hash + GenericValue> FValue<Output> {
 
     pub fn multiple_fixed(&self, mut vars: Vec<(usize, bool)>) -> Self {
         let mut new_repr = self.clone();
-        vars.sort_by(|a, b| a.0.cmp(&b.0));
+        vars.sort_by_key(|a| a.0);
 
         for (i, (var, value)) in vars.iter().enumerate() {
             new_repr = new_repr.fixed(*var - i, *value);

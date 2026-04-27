@@ -1,6 +1,6 @@
 [package]
 name = "clique_solver"
-version = "0.1.0"
+version.workspace = true
 edition = "2021"
 description = "Solver for the NP-complete CLIQUE problem on graphs using boolean vector adjacency encoding"
 license = "MIT"
@@ -9,7 +9,10 @@ homepage = "https://github.com/edugzlez/fbool"
 readme = "../README.md"
 keywords = ["clique", "graph", "boolean", "combinatorics", "np-complete"]
 categories = ["algorithms", "mathematics"]
-authors = ["Eduardo González-Vaquero <edugonzalezvaq@gmail.com>", "Ricardo Maurizio Paul <memaurifu14@gmail.com>"]
+authors = [
+    "Eduardo González-Vaquero <edugonzalezvaq@gmail.com>",
+    "Ricardo Maurizio Paul <memaurifu14@gmail.com>",
+]
 
 [lib]
 name = "clique_solver"

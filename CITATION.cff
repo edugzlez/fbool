@@ -8,11 +8,11 @@ repository-code: "https://github.com/edugzlez/fbool"
 authors:
   - family-names: "González-Vaquero"
     given-names: "Eduardo"
-    email: "edugonzalezvaq@gmail.com"
+    email: "edugon07@ucm.es"
     orcid: "0009-0001-6329-1525"
   - family-names: "Maurizio Paul"
     given-names: "Ricardo"
-    email: "memaurifu14@gmail.com"
+    email: "rpaul01@ucm.es"
     orcid: ""
 abstract: >
   fbool is a Rust library for analyzing Boolean functions, with a focus

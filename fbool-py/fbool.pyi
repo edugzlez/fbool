@@ -284,15 +284,6 @@ class FBool:
         """
         ...
 
-    def minimal_depth(self) -> int | None:
-        """Get the minimal depth required to implement the FBool object.
-
-        Returns:
-            (int | None):
-                The minimal depth required to implement the FBool object, or None if the FBool object is empty.
-        """
-        ...
-
     def frontier_size(self) -> int:
         """
         Calculate the size of the frontier of the FBool object.

@@ -11,6 +11,8 @@ pub mod examples;
 pub mod fmulti;
 pub mod fvalue;
 pub mod macros;
+#[cfg(feature = "optimal5")]
+pub mod optimal5;
 
 /// Metrics submodule containing complexity, spectral analysis, frontier and entanglement tools.
 pub mod metrics;

@@ -1,6 +1,6 @@
 [package]
 name = "fbool-experiments"
-version = "0.1.0"
+version.workspace = true
 edition = "2024"
 
 [[bin]]
@@ -23,9 +23,8 @@ path = "src/orthogonality.rs"
 [dependencies]
 clap = { version = "4.5.39", features = ["derive"] }
 comfy-table = "7.2.1"
-fbool = { version = "0.1.0", path = "../fbool" }
+fbool = { path = "../fbool", features = ["optimal5"] }
 indicatif = { version = "0.18.4", features = ["rayon"] }
-optimal5 = { version = "0.1.0", path = "../optimal5" }
 polars = { version = "0.53.0", features = ["parquet", "lazy"] }
 parquet = "53.3.0"
 rayon.workspace = true

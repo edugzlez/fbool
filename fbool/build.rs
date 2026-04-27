@@ -1,12 +1,18 @@
 // build.rs - Multi-compiler build (MSVC, MinGW, GCC)
+// Only builds the optimal5 C++ engine if the "optimal5" feature is enabled.
 use std::env;
 
 fn main() {
+    // Only build C++ if optimal5 feature is enabled
+    if env::var("CARGO_FEATURE_OPTIMAL5").is_err() {
+        return;
+    }
+
     println!("cargo:rerun-if-changed=cpp/");
 
     // Debug info
     let target = env::var("TARGET").unwrap_or_default();
-    println!("cargo:warning=Building for target: {target}");
+    println!("cargo:warning=Building optimal5 for target: {target}");
 
     let mut build = cc::Build::new();
     build.cpp(true).file("cpp/lib.cpp").include("cpp");

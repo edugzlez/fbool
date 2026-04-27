@@ -1,7 +1,7 @@
 use clap::{Parser, ValueEnum};
 use fbool::fvalue::FValue;
+use fbool::optimal5::WithMinimalGates;
 use indicatif::{ParallelProgressIterator, ProgressBar, ProgressStyle};
-use optimal5::WithMinimalGates;
 use polars::prelude::*;
 use rayon::prelude::*;
 use std::collections::HashMap;

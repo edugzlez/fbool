@@ -1,6 +1,5 @@
 pub trait WithMinimalGates {
     fn minimal_gates(&self) -> Option<u32>;
-    fn minimal_depth(&self) -> Option<u32>;
     fn npn_representant(&self) -> Option<u32>;
 }
 
@@ -13,7 +12,6 @@ pub struct WrapperOptimiser {
 unsafe extern "C" {
     fn create_wrapper(bv: *const u8) -> *mut WrapperOptimiser;
     fn num_gates(wrapper: *mut WrapperOptimiser, fun: u32) -> u32;
-    fn calculate_depth(wrapper: *mut WrapperOptimiser, fun: u32) -> u32;
     fn npn_representant(wrapper: *mut WrapperOptimiser, fun: u32) -> u32;
 }
 
@@ -28,7 +26,7 @@ pub fn init_wrapper() {
     }
 }
 
-impl WithMinimalGates for fbool::fvalue::FValue<bool> {
+impl WithMinimalGates for crate::fvalue::FValue<bool> {
     fn minimal_gates(&self) -> Option<u32> {
         init_wrapper();
         if self.repr().len() != 32 {
@@ -43,23 +41,6 @@ impl WithMinimalGates for fbool::fvalue::FValue<bool> {
             }
             let ngates = unsafe { num_gates(WRAPPER, fun) };
             Some(ngates)
-        }
-    }
-
-    fn minimal_depth(&self) -> Option<u32> {
-        init_wrapper();
-        if self.repr().len() != 32 {
-            None
-        } else {
-            let usize_repr = self.repr();
-
-            let mut fun: u32 = 0;
-            for i in 0..usize_repr.len() {
-                let bit = usize_repr[usize_repr.len() - i - 1] as u32;
-                fun |= bit << i;
-            }
-            let depth = unsafe { calculate_depth(WRAPPER, fun) };
-            Some(depth)
         }
     }
 
@@ -84,7 +65,7 @@ impl WithMinimalGates for fbool::fvalue::FValue<bool> {
 #[cfg(test)]
 mod tests {
     use super::WithMinimalGates;
-    use fbool::fvalue::FValue;
+    use crate::fvalue::FValue;
 
     #[test]
     fn minimal_gates_handles_basic_5var_functions() {

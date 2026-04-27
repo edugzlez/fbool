@@ -1,14 +1,20 @@
 [project]
 name = "fbool"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Python bindings for fbool: Boolean function analysis with entanglement, entropy, sensitivity and circuit complexity"
-readme = "../README.md"
+readme = "README.md"
 license = { text = "MIT" }
 authors = [
-    { name = "Eduardo González-Vaquero", email = "edugonzalezvaq@gmail.com" },
-    { name = "Ricardo Maurizio Paul", email = "memaurifu14@gmail.com" },
+    { name = "Eduardo González-Vaquero", email = "edugon07@ucm.es" },
+    { name = "Ricardo Maurizio Paul", email = "rpaul01@ucm.es" },
 ]
-keywords = ["boolean", "entanglement", "information-theory", "circuit-complexity", "logic"]
+keywords = [
+    "boolean",
+    "entanglement",
+    "information-theory",
+    "circuit-complexity",
+    "logic",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -20,13 +26,15 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Information Analysis",
 ]
-dependencies = [
-    "numpy>=2.2.5",
-]
+dependencies = ["numpy>=2.2.5"]
 requires-python = ">=3.11"
 
 [tool.uv]
-cache-keys = [{file = "pyproject.toml"}, {file = "Cargo.toml"}, {file = "**/*.rs"}]
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "Cargo.toml" },
+    { file = "**/*.rs" },
+]
 
 
 [build-system]

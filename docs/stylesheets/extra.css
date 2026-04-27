@@ -1,0 +1,44 @@
+:root {
+  --fbool-card-border: color-mix(in srgb, var(--md-default-fg-color) 14%, transparent);
+}
+
+.md-typeset .hero {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.md-typeset .hero h1 {
+  margin-bottom: 0;
+}
+
+.md-typeset .hero p {
+  max-width: 48rem;
+  font-size: 1.05rem;
+}
+
+.md-typeset .quick-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin: 1.25rem 0;
+}
+
+.md-typeset .quick-card {
+  border: 1px solid var(--fbool-card-border);
+  border-radius: 0.45rem;
+  padding: 1rem;
+}
+
+.md-typeset .quick-card h3 {
+  margin-top: 0;
+}
+
+.md-typeset .metric-pill {
+  display: inline-block;
+  border: 1px solid var(--fbool-card-border);
+  border-radius: 999px;
+  padding: 0.12rem 0.55rem;
+  margin: 0.12rem;
+  font-size: 0.82rem;
+}

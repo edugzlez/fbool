@@ -1,236 +1,296 @@
 # fbool
 
-A Rust library for analyzing **Boolean functions**, with a focus on **entanglement**, information-theoretic measures, and circuit complexity. Includes Python bindings and a command-line interface.
+`fbool` is a Rust workspace for analysing Boolean functions, with support for
+entanglement-style measures, information-theoretic metrics, spectral and
+structural properties, certificate complexity, frontier graphs, and exact
+minimal-gate data for functions of up to 5 variables.
 
-This library was developed to support research on entanglement measures for Boolean functions. If you use it in your work, please cite the associated paper (see [Citation](#citation)).
+The workspace contains the publishable Rust library crate, a CLI, Python
+bindings built with PyO3/maturin, and experiment binaries used by the research
+workflow.
 
----
+## Workspace
 
-## Overview
-
-`fbool` provides data structures and algorithms for:
-
-- Representing Boolean functions compactly (truth-table encoding)
-- Computing **entanglement** and **min-max entanglement** via bipartitions of variables
-- Computing **Shannon entropy** of variable partitions
-- Measuring **influence**, **sensitivity**, **spectral** properties (Walsh-Hadamard transform), and **frontier** structure
-- Estimating **certificate complexity**
-- Finding the **minimum gate count** for functions of up to 5 variables (via an integrated C++ optimizer)
-
-The workspace also ships a **Python package** (`fbool`) built with [PyO3](https://pyo3.rs) and [maturin](https://maturin.rs), and a **CLI tool** (`fbool-cli`).
-
----
-
-## Repository Structure
-
-```
-fbool/                 # Core Rust library
+```text
+fbool/                 # Publishable Rust library crate
+fbool/src/metrics/     # Entanglement, entropy, fragmentation, frontier, spectral, sensitivity, influence
+fbool/src/optimal5.rs  # Default Rust API for the integrated optimal5 engine
+fbool/cpp/             # C++ sources from Adam P. Goucher's optimal5 engine
+fbool/knuthies.dat     # Lookup data used by the optimal5 feature
 fbool-cli/             # Command-line interface
-fbool-py/              # Python bindings (PyO3 + maturin)
-clique_solver/         # CLIQUE-problem solver used internally
-optimal5/              # Rust wrapper around Adam P. Goucher's optimal5 C++ engine (minimal-gate optimizer)
+fbool-py/              # Python extension module named fbool
+fbool-experiments/     # Research/analysis binaries
+experiments/           # Experiment assets and scripts
+clique_solver/         # Standalone clique-solver code retained in the repository
 ```
 
----
+The old standalone `optimal5` crate has been folded into `fbool` as the default
+`optimal5` feature. There is no separate workspace member for it anymore.
 
-## Theoretical Background
+## Rust Crate
 
-### Boolean Functions
-
-A Boolean function `f : {0,1}^n -> {0,1}` is represented as a truth table: a vector of `2^n` Boolean values indexed by the binary encoding of each input.
-
-### Entanglement
-
-Given a bipartition `(A, B)` of the `n` input variables, the **information** `I(S)` of a set `S` counts the number of distinct sub-functions obtained by fixing all variables outside `S`. The two entanglement measures defined in this work are:
-
-```
-Entanglement(f)        = min_{A,B}  [ I(A) + I(B) ]
-MinMax-Entanglement(f) = min_{A,B}  max( I(A), I(B) )
-```
-
-Both minimize over all non-trivial bipartitions of `{0, ..., n-1}`.
-
-### Entropy
-
-For a bipartition `(A, B)`, the entropy is computed as the sum of the Shannon entropies of the empirical distributions induced by each partition. The minimum over all bipartitions gives the entropy measure of the function.
-
----
-
-## Rust Usage
-
-Add `fbool` to your `Cargo.toml`:
+Add the library from crates.io once published:
 
 ```toml
 [dependencies]
-fbool = { git = "https://github.com/edugzlez/fbool" }
+fbool = "0.1"
 ```
+
+The minimal-gate API backed by the integrated C++ engine is enabled by default.
+If you want a pure-Rust build without `optimal5`, disable default
+features and opt back into the Rust-only metric families you need:
+
+```toml
+[dependencies]
+fbool = { version = "0.1", default-features = false, features = ["entanglement", "frontier"] }
+```
+
+For local development inside this repository:
+
+```toml
+[dependencies]
+fbool = { path = "../fbool" }
+```
+
+### Features
+
+| Feature | Enabled by default | Description |
+|---|---:|---|
+| `entanglement` | yes | Entanglement, entropy, sub-information, equanimity importance, fragmentation |
+| `frontier` | yes | Frontier graph metrics via `petgraph` |
+| `optimal5` | yes | C++ optimal5 engine for exact minimal gates up to 5 variables |
+| `fmatrix` | no | Experimental multi-output function helpers |
+| `clique` | no | Clique-based Boolean function constructor |
 
 ### Basic Example
 
 ```rust
-use fbool::fvalue::FValue;
 use fbool::entanglement::{Entanglement, Entropy};
+use fbool::fvalue::FValue;
 
 fn main() {
-    // Majority function on 4 variables
     let f = FValue::majority(4);
 
-    println!("Entanglement:        {}", f.entanglement());
-    println!("MinMax entanglement: {}", f.minmax_entanglement());
-    println!("Entropy:             {}", f.entropy());
+    println!("entanglement: {}", f.entanglement());
+    println!("minmax entanglement: {}", f.minmax_entanglement());
+    println!("entropy: {}", f.entropy());
 
-    // Inspect all bipartitions
-    for es in f.entanglement_sets() {
-        println!("  {:?} | {:?}  ->  {}", es.set1, es.set2, es.entanglement);
+    for set in f.entanglement_sets() {
+        println!("{:?} | {:?} -> {}", set.set1, set.set2, set.entanglement);
     }
 }
 ```
 
-### Available Boolean Functions
+With the default `optimal5` feature:
 
-`FValue` provides constructors for many classical families:
+```rust
+use fbool::fvalue::FValue;
+use fbool::optimal5::WithMinimalGates;
+
+fn main() {
+    let f = FValue::majority(5);
+    println!("minimal gates: {:?}", f.minimal_gates());
+}
+```
+
+### Function Constructors
+
+`FValue<bool>` includes:
 
 | Constructor | Description |
 |---|---|
-| `FValue::majority(n)` | Majority function |
-| `FValue::parity(n)` | Parity (XOR) function |
-| `FValue::primality(n)` | Primality test |
-| `FValue::zero_search(n)` | Zero-search function |
-| `FValue::sum(n)` | Arithmetic sum |
-| `FValue::product(n)` | Arithmetic product |
-| `FValue::gcd(n)` | GCD function |
-| `FValue::clique(n)` | Clique decision function |
+| `majority(n)` | Majority function |
+| `parity(n)` | Parity function |
+| `primality(n)` | Primality predicate over the truth-table index |
+| `equality(n)` | Equality of two `n`-bit inputs |
+| `ordered(n)` | Ordered comparison of two `n`-bit inputs |
+| `coprimes(n)` | Coprimality of two `n`-bit inputs |
+| `sum_is_prime(n)` | Primality of the sum of two `n`-bit inputs |
+| `product_is_multiple_of(n, multiple)` | Divisibility predicate |
+| `find_zero(vector_size, element_size)` | Search for a zero element in an encoded vector |
+| `constant(n, value)` | Constant Boolean function |
+| `random(n)` | Random Boolean function |
+| `from_usize(fun, n)` | Decode a Boolean truth table from an integer |
+| `clique(n)` | Clique predicate, behind the `clique` feature |
+
+`FValue<usize>` includes arithmetic-valued constructors such as `sum`, `product`,
+`max`, `gcd`, `multiply`, `sum_some`, and `constant`.
 
 ### Metrics
 
-| Trait | Methods |
+The public API exposes metrics through modules under `fbool::metrics` and
+through top-level compatibility re-exports:
+
+| Area | Examples |
 |---|---|
-| `Entanglement` | `entanglement()`, `entanglement_sets()`, `minmax_entanglement()`, `minmax_entanglement_sets()` |
-| `Entropy` | `entropy()`, `entropy_sets()` |
-| `Sensitivity` | `sensitivity()` |
-| `Influence` | `influence()` |
-| `CertificateComplexity` | `certificate_complexity()` |
-| `Frontier` | `frontier_graph()` |
-| `WithMinimalGates` | `minimal_gates()` (5-variable functions only) |
+| Entanglement and entropy | `entanglement()`, `minmax_entanglement()`, `entropy()`, `entanglement_sets()`, `entropy_sets()` |
+| Information | `information(vars)`, `sub_infos()` |
+| Fragmentation | `fragmentation_coefficient()`, `fragmentation_spectrum()`, `fragmentation_profile()`, `fragmentation_peak()` |
+| Frontier | `frontier_graph()` |
+| Sensitivity and influence | `max_sensitivity()`, `mean_sensitivity()`, `influence(var)`, `total_influence()` |
+| Spectral analysis | `walsh_coeficients()`, `fourier_coeficients()`, `degree()`, `spectral_entropy()`, `no_linearity()` |
+| Certificate complexity | `certificate_complexity()` |
+| Optimal 5-variable circuits | `minimal_gates()` and `npn_representant()` with the `optimal5` feature |
 
----
+## Python Package
 
-## Python Usage
+The Python package is published on PyPI as `fbool` and exports a module named
+`fbool`. It requires Python 3.11 or newer.
 
-### Installation
-
-Build and install locally with [maturin](https://maturin.rs):
-
-```bash
-cd fbool-py
-pip install maturin
-maturin develop
-```
-
-Or with [uv](https://docs.astral.sh/uv/):
+Install it with `uv`:
 
 ```bash
-cd fbool-py
-uv sync
-uv run maturin develop
+uv add fbool
 ```
 
-### Example
+Or with `pip`:
+
+```bash
+pip install fbool
+```
+
+For local development inside this repository, build the extension from
+`fbool-py` with maturin.
+
+### Python Example
 
 ```python
-import fbool
+from fbool import FBool
 
-# Construct a Boolean function (primality on 4 variables)
-f = fbool.FBool.primality(4)
+f = FBool.primality(4)
 
-# Entanglement
-print("Entanglement:", f.entanglement())
-print("MinMax entanglement:", f.minmax_entanglement())
+print("n vars:", f.n_vars())
+print("entanglement:", f.entanglement())
+print("min gates:", f.minimal_gates())
+print("spectral entropy:", f.spectral_entropy())
 
-# All bipartitions
-for es in f.entanglement_sets():
-    print(f"  {es.set1} | {es.set2}  ->  {es.entanglement}")
-
-# Entropy
-print("Entropy:", f.entropy())
-
-# Truth table as NumPy array
-tt = f.truth_table()
-print("Truth table shape:", tt.shape)
+for item in f.entanglement_sets():
+    print(item.set1, item.set2, item.entanglement)
 ```
 
-### FBool API
+### Python API Highlights
+
+`FBool` supports construction from a truth table or integer encoding:
 
 | Method | Description |
 |---|---|
-| `FBool(repr)` | Construct from a truth-table list |
-| `FBool.from_number(n, num_vars)` | Construct from integer encoding |
-| `FBool.majority(n)` | Majority function |
-| `FBool.parity(n)` | Parity function |
-| `FBool.primality(n)` | Primality function |
-| `f.entanglement()` | Minimum entanglement value |
-| `f.entanglement_sets()` | All bipartition entanglement values |
-| `f.minmax_entanglement()` | Minimum max-entanglement value |
-| `f.entropy()` | Minimum entropy value |
-| `f.entropy_sets()` | All bipartition entropy values |
-| `f.sensitivity()` | Sensitivity measure |
-| `f.truth_table()` | Truth table as `numpy.ndarray` |
-| `f.save(path)` / `FBool.load(path)` | Binary serialization |
+| `FBool(repr)` | Construct from a Boolean truth-table list |
+| `FBool.from_number(number, num_vars)` | Construct from integer truth-table encoding |
+| `FBool.majority(n)`, `FBool.parity(n)`, `FBool.primality(n)` | Standard Boolean families |
+| `FBool.coprimes(n)`, `FBool.sum_is_prime(n)`, `FBool.clique(n)` | Additional constructors |
+| `f.repr()`, `f.eval(i)`, `f.size()`, `f.n_vars()` | Basic inspection |
+| `f.encode()`, `FBool.decode(raw)` | Binary serialization |
+| `f.table(vars)` | NumPy table induced by fixing variables |
+| `f.npn_representant()` | NPN representative for 5-variable functions when available |
 
----
+The Python bindings also expose entanglement, entropy, fragmentation, frontier,
+sensitivity, spectral, influence, certificate, and optimal5 metrics.
 
-## CLI Usage
+## CLI
 
-Build and run:
+Build the CLI:
 
 ```bash
-cargo build --release --bin fbool-cli
+cargo build --release -p fbool-cli
+```
+
+Run help:
+
+```bash
 ./target/release/fbool-cli --help
 ```
 
-### Examples
+On Windows, the binary is `target\release\fbool-cli.exe`.
+
+### CLI Examples
 
 ```bash
-# Entanglement of the majority function with 4 variables
-fbool-cli entanglement majority -n 4
+# Entanglement of majority on 4 variables
+fbool-cli entanglement majority --n-vars 4
 
-# All bipartitions, sorted by entanglement value
-fbool-cli entanglement parity -n 5 --sets --sorted
+# All bipartitions, sorted, keeping the first 10 rows
+fbool-cli entanglement --sets --sorted --head 10 parity --n-vars 5
 
-# Entropy
-fbool-cli entropy majority -n 4 --sets
+# Min-max entanglement
+fbool-cli entanglement --minmax majority --n-vars 4
 
-# Per-variable information
-fbool-cli subinfo primality -n 5
+# Entropy sets
+fbool-cli entropy --sets majority --n-vars 4
 
-# Serialize a function to binary
-fbool-cli encode primality -n 5 -o primality_5.bin
+# Per-subset information
+fbool-cli sub-info primality --n-vars 5
+
+# Encode and load a function
+fbool-cli encode --output-path primality_5.bin primality --n-vars 5
+fbool-cli entanglement bin --path primality_5.bin
 ```
 
----
+Available function subcommands include `majority`, `parity`, `eq`, `ordered`,
+`multiply`, `sum`, `max`, `gcd`, `primality`, `sum-is-prime`, `coprimes`,
+`constant`, `usize-constant`, `raw`, `bin`, `find-zero`, and `meta`.
 
-## Building
+## Experiments
 
-**Requirements:** Rust 1.70+, a C++ compiler (for `optimal5`), Python 3.11+ (for Python bindings).
+The `fbool-experiments` crate contains research binaries:
 
 ```bash
-# Build the full workspace
-cargo build --release
+cargo run -p fbool-experiments --bin npn-create -- --help
+cargo run -p fbool-experiments --bin compute-metrics -- --help
+cargo run -p fbool-experiments --bin bayes-optimal -- --help
+cargo run -p fbool-experiments --bin orthogonality -- --help
+```
 
-# Run all tests
-cargo test --all
+These tools are part of the repository workflow, but the publishable Rust crate
+is `fbool`.
 
-# Run lints
+## Documentation
+
+The MkDocs Material documentation lives in `docs/` and is configured by
+`mkdocs.yml`.
+
+```bash
+uv run --with-requirements docs/requirements.txt mkdocs serve
+```
+
+For CI-style validation:
+
+```bash
+uv run --with-requirements docs/requirements.txt mkdocs build --strict
+```
+
+## Building And Testing
+
+Requirements:
+
+- Rust stable
+- A C++ compiler for default `fbool` builds, because `optimal5` is enabled by default
+- Python 3.11+ for the Python package
+- `uv` is optional but recommended for Python development
+
+Common commands:
+
+```bash
+cargo check -p fbool
+cargo check -p fbool --no-default-features --features entanglement,frontier
+cargo test --workspace
 cargo clippy --all-targets --all-features
+cargo package -p fbool --allow-dirty
 ```
 
----
+## Releases
 
-## License
+Versioning is managed from the repository root with Commitizen via `.cz.toml`.
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+```bash
+uv tool install commitizen
+cz bump --changelog --yes
+```
 
----
+Publishing is driven by GitHub Actions on `v*` tags:
+
+- `cargo publish -p fbool` publishes the Rust crate to crates.io.
+- maturin builds Python wheels for Linux, Windows, and macOS ARM.
+- the Python wheels are published to PyPI as `fbool`.
 
 ## Citation
 
@@ -247,15 +307,15 @@ If you use this software in academic work, please cite:
 
 The associated paper citation will be added upon publication.
 
----
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
+
+The integrated `optimal5` C++ engine is derived from Adam P. Goucher's
+[optimal5](https://gitlab.com/apgoucher/optimal5), also used under the MIT
+License.
 
 ## Authors
 
-- **Eduardo González-Vaquero** — [edugzlez](https://github.com/edugzlez)
-- **Ricardo Maurizio Paul**
-
----
-
-## Acknowledgements
-
-The `optimal5` crate is a Rust wrapper around the [optimal5](https://gitlab.com/apgoucher/optimal5) C++ engine by **Adam P. Goucher**, used under the MIT License. The original engine computes the minimum number of logic gates required to implement any Boolean function of up to 5 variables using a precomputed exhaustive lookup table.
+- Eduardo Gonzalez-Vaquero ([edugzlez](https://github.com/edugzlez))
+- Ricardo Maurizio Paul

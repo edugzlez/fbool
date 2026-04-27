@@ -28,6 +28,7 @@ fbool-py/.cargo
 # Documentation
 node_modules/
 doc_build/
+/site/
 
 # Media and output
 *.png

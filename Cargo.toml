@@ -1,11 +1,9 @@
 [workspace]
 resolver = "2"
-members = [
-    "fbool-cli",
-    "fbool-py",
-    "fbool",
-    "optimal5", "fbool-experiments",
-]
+members = ["fbool-cli", "fbool-py", "fbool", "fbool-experiments"]
+
+[workspace.package]
+version = "0.1.0"
 
 [workspace.dependencies]
 # Core dependencies

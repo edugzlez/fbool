@@ -26,7 +26,7 @@ FBool Entanglement is a Rust workspace project that provides tools for analyzing
 
 - Rust 1.70 or later
 - Python 3.8+ (for Python bindings)
-- C++ compiler (GCC or Clang for optimal5 crate)
+- C++ compiler (GCC or Clang for the optional optimal5 feature)
 
 ### Building the Project
 
@@ -78,7 +78,7 @@ The project is organized as a Rust workspace with the following crates:
 - **fbool-cli**: Command-line interface
 - **fbool-py**: Python bindings (PyO3)
 - **clique_solver**: CLIQUE problem solver
-- **optimal5**: Logic gate optimizer for 5-variable functions (Rust + C++)
+- **fbool::optimal5**: Optional logic gate optimizer for 5-variable functions (Rust + C++)
 
 ## Running Tests
 
