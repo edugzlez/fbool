@@ -15,6 +15,7 @@ fn main() {
     if target.contains("msvc") {
         // MSVC-specific flags
         build
+            .flag("/std:c++17")
             .flag("/O2") // Optimization level 2
             .flag("/EHsc") // Exception handling model
             .define("_CRT_SECURE_NO_WARNINGS", None); // Disable security warnings

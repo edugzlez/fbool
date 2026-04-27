@@ -8,15 +8,18 @@
 // Global instance (unused but kept for future extensibility)
 [[maybe_unused]] static opt5::Optimiser *global_opt = nullptr;
 
-int calculate_depth(opt5::gatevec_fast &gv) {
+int calculate_depth(opt5::gatevec_fast &gv)
+{
   // TODO: revisar
-  if (gv.n_gates == 0) {
+  if (gv.n_gates == 0)
+  {
     return 0; // Solo inputs, depth = 0
   }
 
   int depths[18] = {0};
 
-  for (int idx = 0; idx < gv.n_gates; idx++) {
+  for (int idx = 0; idx < gv.n_gates; idx++)
+  {
     uint16_t gate = gv.gates[idx];
 
     int i1 = (gate >> 4) & 31;
@@ -31,7 +34,8 @@ int calculate_depth(opt5::gatevec_fast &gv) {
   return depths[output_gate];
 }
 
-class WrapperOptimiser {
+class WrapperOptimiser
+{
 public:
   opt5::Optimiser *opt;
   WrapperOptimiser(std::vector<uint8_t> bv) { opt = new opt5::Optimiser(bv); }
@@ -39,26 +43,31 @@ public:
   ~WrapperOptimiser() { delete opt; }
 };
 
-extern "C" {
+extern "C"
+{
 
-void *create_wrapper(uint8_t *bv) {
-  std::vector<uint8_t> bv_vec(bv, bv + 9241860); // Assuming size of bv is 100
-  auto wrapper = new WrapperOptimiser(bv_vec);
-  return reinterpret_cast<void *>(wrapper);
-}
+  void *create_wrapper(const uint8_t *bv)
+  {
+    std::vector<uint8_t> bv_vec(bv, bv + 9241860); // Assuming size of bv is 100
+    auto wrapper = new WrapperOptimiser(bv_vec);
+    return reinterpret_cast<void *>(wrapper);
+  }
 
-uint8_t num_gates(void *wrapper, uint32_t fun) {
-  auto gv = reinterpret_cast<WrapperOptimiser *>(wrapper)->opt->lookup(fun);
-  return gv.n_gates;
-}
+  uint32_t num_gates(void *wrapper, uint32_t fun)
+  {
+    auto gv = reinterpret_cast<WrapperOptimiser *>(wrapper)->opt->lookup(fun);
+    return static_cast<uint32_t>(gv.n_gates);
+  }
 
-uint32_t npn_representant(void *wrapper, uint32_t fun) {
-  return reinterpret_cast<WrapperOptimiser *>(wrapper)
-      ->opt->lookup_representant(fun);
-}
+  uint32_t npn_representant(void *wrapper, uint32_t fun)
+  {
+    return reinterpret_cast<WrapperOptimiser *>(wrapper)
+        ->opt->lookup_representant(fun);
+  }
 
-uint8_t calculate_depth(void *wrapper, uint32_t fun) {
-  auto gv = reinterpret_cast<WrapperOptimiser *>(wrapper)->opt->lookup(fun);
-  return calculate_depth(gv);
-}
+  uint32_t calculate_depth(void *wrapper, uint32_t fun)
+  {
+    auto gv = reinterpret_cast<WrapperOptimiser *>(wrapper)->opt->lookup(fun);
+    return static_cast<uint32_t>(calculate_depth(gv));
+  }
 }
