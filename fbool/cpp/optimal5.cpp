@@ -630,7 +630,7 @@ namespace opt5
       y[3] = 0;
       z[3] = 0;
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && (defined(_M_IX86) || defined(_M_X64))
       const __m128i perm_vec = _mm_loadu_si128((const __m128i *)perm);
       const __m128i y_vec1 = _mm_loadu_si128((const __m128i *)y);
       const __m128i y_vec2 = _mm_loadu_si128((const __m128i *)(y + 2));
@@ -641,7 +641,7 @@ namespace opt5
       _mm_storeu_si128((__m128i *)y, result1);
       _mm_storeu_si128((__m128i *)(y + 2), result2);
 
-#else
+#elif defined(__i386__) || defined(__x86_64__)
       asm("movups (%0), %%xmm0 \n\t"
           "movups (%1), %%xmm2 \n\t"
           "movups 16(%1), %%xmm3 \n\t"
@@ -653,6 +653,17 @@ namespace opt5
           : /* no output operands -- implicitly volatile */
           : "r"(perm), "r"(y)
           : "xmm0", "xmm1", "xmm2", "xmm3", "memory");
+#else
+      uint8_t controls[32];
+      memcpy(controls, y, 32);
+
+      const uint8_t *perm_bytes = reinterpret_cast<const uint8_t *>(perm);
+      uint8_t *y_bytes = reinterpret_cast<uint8_t *>(y);
+
+      for (int i = 0; i < 32; i++)
+      {
+        y_bytes[i] = (controls[i] & 0x80) ? 0 : perm_bytes[controls[i] & 0x0f];
+      }
 #endif
 
       for (int i = 0; i < 3; i++)

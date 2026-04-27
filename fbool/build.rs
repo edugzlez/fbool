@@ -25,7 +25,7 @@ fn main() {
             .flag("/O2") // Optimization level 2
             .flag("/EHsc") // Exception handling model
             .define("_CRT_SECURE_NO_WARNINGS", None); // Disable security warnings
-    } else if target.contains("gnu") || target.contains("mingw") {
+    } else if target.contains("windows") && (target.contains("gnu") || target.contains("mingw")) {
         // MinGW/GCC flags for Windows GNU target
         build
             .flag("-O3")
@@ -35,11 +35,8 @@ fn main() {
             .flag("-static-libgcc")
             .flag("-static-libstdc++");
 
-        // Add Windows-specific flags for MinGW
-        if target.contains("windows") {
-            build.define("WIN32", None);
-            build.define("_WIN32", None);
-        }
+        build.define("WIN32", None);
+        build.define("_WIN32", None);
     } else {
         // Default GCC flags for other targets
         build
