@@ -15,9 +15,25 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+      - name: Check whether crate version exists
+        id: crate-version
+        run: |
+          version="$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[] | select(.name == "fbool") | .version')"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+          if curl --silent --fail --output /dev/null \
+            -H "User-Agent: edugzlez/fbool publish workflow" \
+            "https://crates.io/api/v1/crates/fbool/$version"; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "fbool $version already exists on crates.io; skipping cargo publish."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: rust-lang/crates-io-auth-action@v1
+        if: steps.crate-version.outputs.exists != 'true'
         id: auth
       - run: cargo publish -p fbool
+        if: steps.crate-version.outputs.exists != 'true'
         env:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
 
@@ -88,14 +104,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Linux ARM C++ toolchain
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          echo "CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc" >> "$GITHUB_ENV"
-          echo "CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++" >> "$GITHUB_ENV"
       - name: Build wheels
         uses: PyO3/maturin-action@v1
+        env:
+          CC_aarch64_unknown_linux_gnu: aarch64-unknown-linux-gnu-gcc
+          CXX_aarch64_unknown_linux_gnu: aarch64-unknown-linux-gnu-g++
         with:
           working-directory: fbool-py
           target: aarch64-unknown-linux-gnu
@@ -111,6 +124,7 @@ jobs:
   publish-pypi:
     name: Publish to PyPI
     needs: [build-wheels, build-wheels-macos-arm, build-wheels-linux-arm]
+    if: always() && needs.build-wheels.result == 'success' && needs.build-wheels-macos-arm.result == 'success'
     runs-on: ubuntu-latest
     environment:
       name: pypi
