@@ -33,7 +33,7 @@ Add the library from crates.io once published:
 
 ```toml
 [dependencies]
-fbool = "0.1"
+fbool = "0.2"
 ```
 
 The minimal-gate API backed by the integrated C++ engine is enabled by default.
@@ -42,7 +42,7 @@ features and opt back into the Rust-only metric families you need:
 
 ```toml
 [dependencies]
-fbool = { version = "0.1", default-features = false, features = ["entanglement", "frontier"] }
+fbool = { version = "0.2", default-features = false, features = ["entanglement", "frontier"] }
 ```
 
 For local development inside this repository:
@@ -54,13 +54,13 @@ fbool = { path = "../fbool" }
 
 ### Features
 
-| Feature | Enabled by default | Description |
-|---|---:|---|
-| `entanglement` | yes | Entanglement, entropy, sub-information, equanimity importance, fragmentation |
-| `frontier` | yes | Frontier graph metrics via `petgraph` |
-| `optimal5` | yes | C++ optimal5 engine for exact minimal gates up to 5 variables |
-| `fmatrix` | no | Experimental multi-output function helpers |
-| `clique` | no | Clique-based Boolean function constructor |
+| Feature        | Enabled by default | Description                                                                  |
+| -------------- | -----------------: | ---------------------------------------------------------------------------- |
+| `entanglement` |                yes | Entanglement, entropy, sub-information, equanimity importance, fragmentation |
+| `frontier`     |                yes | Frontier graph metrics via `petgraph`                                        |
+| `optimal5`     |                yes | C++ optimal5 engine for exact minimal gates up to 5 variables                |
+| `fmatrix`      |                 no | Experimental multi-output function helpers                                   |
+| `clique`       |                 no | Clique-based Boolean function constructor                                    |
 
 ### Basic Example
 
@@ -97,21 +97,21 @@ fn main() {
 
 `FValue<bool>` includes:
 
-| Constructor | Description |
-|---|---|
-| `majority(n)` | Majority function |
-| `parity(n)` | Parity function |
-| `primality(n)` | Primality predicate over the truth-table index |
-| `equality(n)` | Equality of two `n`-bit inputs |
-| `ordered(n)` | Ordered comparison of two `n`-bit inputs |
-| `coprimes(n)` | Coprimality of two `n`-bit inputs |
-| `sum_is_prime(n)` | Primality of the sum of two `n`-bit inputs |
-| `product_is_multiple_of(n, multiple)` | Divisibility predicate |
+| Constructor                            | Description                                    |
+| -------------------------------------- | ---------------------------------------------- |
+| `majority(n)`                          | Majority function                              |
+| `parity(n)`                            | Parity function                                |
+| `primality(n)`                         | Primality predicate over the truth-table index |
+| `equality(n)`                          | Equality of two `n`-bit inputs                 |
+| `ordered(n)`                           | Ordered comparison of two `n`-bit inputs       |
+| `coprimes(n)`                          | Coprimality of two `n`-bit inputs              |
+| `sum_is_prime(n)`                      | Primality of the sum of two `n`-bit inputs     |
+| `product_is_multiple_of(n, multiple)`  | Divisibility predicate                         |
 | `find_zero(vector_size, element_size)` | Search for a zero element in an encoded vector |
-| `constant(n, value)` | Constant Boolean function |
-| `random(n)` | Random Boolean function |
-| `from_usize(fun, n)` | Decode a Boolean truth table from an integer |
-| `clique(n)` | Clique predicate, behind the `clique` feature |
+| `constant(n, value)`                   | Constant Boolean function                      |
+| `random(n)`                            | Random Boolean function                        |
+| `from_usize(fun, n)`                   | Decode a Boolean truth table from an integer   |
+| `clique(n)`                            | Clique predicate, behind the `clique` feature  |
 
 `FValue<usize>` includes arithmetic-valued constructors such as `sum`, `product`,
 `max`, `gcd`, `multiply`, `sum_some`, and `constant`.
@@ -121,16 +121,16 @@ fn main() {
 The public API exposes metrics through modules under `fbool::metrics` and
 through top-level compatibility re-exports:
 
-| Area | Examples |
-|---|---|
-| Entanglement and entropy | `entanglement()`, `minmax_entanglement()`, `entropy()`, `entanglement_sets()`, `entropy_sets()` |
-| Information | `information(vars)`, `sub_infos()` |
-| Fragmentation | `fragmentation_coefficient()`, `fragmentation_spectrum()`, `fragmentation_profile()`, `fragmentation_peak()` |
-| Frontier | `frontier_graph()` |
-| Sensitivity and influence | `max_sensitivity()`, `mean_sensitivity()`, `influence(var)`, `total_influence()` |
-| Spectral analysis | `walsh_coeficients()`, `fourier_coeficients()`, `degree()`, `spectral_entropy()`, `no_linearity()` |
-| Certificate complexity | `certificate_complexity()` |
-| Optimal 5-variable circuits | `minimal_gates()` and `npn_representant()` with the `optimal5` feature |
+| Area                        | Examples                                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Entanglement and entropy    | `entanglement()`, `minmax_entanglement()`, `entropy()`, `entanglement_sets()`, `entropy_sets()`              |
+| Information                 | `information(vars)`, `sub_infos()`                                                                           |
+| Fragmentation               | `fragmentation_coefficient()`, `fragmentation_spectrum()`, `fragmentation_profile()`, `fragmentation_peak()` |
+| Frontier                    | `frontier_graph()`                                                                                           |
+| Sensitivity and influence   | `max_sensitivity()`, `mean_sensitivity()`, `influence(var)`, `total_influence()`                             |
+| Spectral analysis           | `walsh_coeficients()`, `fourier_coeficients()`, `degree()`, `spectral_entropy()`, `no_linearity()`           |
+| Certificate complexity      | `certificate_complexity()`                                                                                   |
+| Optimal 5-variable circuits | `minimal_gates()` and `npn_representant()` with the `optimal5` feature                                       |
 
 ## Python Package
 
@@ -172,16 +172,16 @@ for item in f.entanglement_sets():
 
 `FBool` supports construction from a truth table or integer encoding:
 
-| Method | Description |
-|---|---|
-| `FBool(repr)` | Construct from a Boolean truth-table list |
-| `FBool.from_number(number, num_vars)` | Construct from integer truth-table encoding |
-| `FBool.majority(n)`, `FBool.parity(n)`, `FBool.primality(n)` | Standard Boolean families |
-| `FBool.coprimes(n)`, `FBool.sum_is_prime(n)`, `FBool.clique(n)` | Additional constructors |
-| `f.repr()`, `f.eval(i)`, `f.size()`, `f.n_vars()` | Basic inspection |
-| `f.encode()`, `FBool.decode(raw)` | Binary serialization |
-| `f.table(vars)` | NumPy table induced by fixing variables |
-| `f.npn_representant()` | NPN representative for 5-variable functions when available |
+| Method                                                          | Description                                                |
+| --------------------------------------------------------------- | ---------------------------------------------------------- |
+| `FBool(repr)`                                                   | Construct from a Boolean truth-table list                  |
+| `FBool.from_number(number, num_vars)`                           | Construct from integer truth-table encoding                |
+| `FBool.majority(n)`, `FBool.parity(n)`, `FBool.primality(n)`    | Standard Boolean families                                  |
+| `FBool.coprimes(n)`, `FBool.sum_is_prime(n)`, `FBool.clique(n)` | Additional constructors                                    |
+| `f.repr()`, `f.eval(i)`, `f.size()`, `f.n_vars()`               | Basic inspection                                           |
+| `f.encode()`, `FBool.decode(raw)`                               | Binary serialization                                       |
+| `f.table(vars)`                                                 | NumPy table induced by fixing variables                    |
+| `f.npn_representant()`                                          | NPN representative for 5-variable functions when available |
 
 The Python bindings also expose entanglement, entropy, fragmentation, frontier,
 sensitivity, spectral, influence, certificate, and optimal5 metrics.

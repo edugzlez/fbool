@@ -12,7 +12,7 @@ remembered across the documentation.
 
     ```toml
     [dependencies]
-    fbool = "0.1"
+    fbool = "0.2"
     ```
 
     For local workspace development:
