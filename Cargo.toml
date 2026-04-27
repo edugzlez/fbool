@@ -18,7 +18,7 @@ tokio-stream = "0.1"
 futures = "0.3"
 
 # Math and algorithms
-nalgebra = "0.33"
+nalgebra = "0.34"
 ndarray = "0.17"
 rayon = "1.11"
 itertools = "0.14"
