@@ -33,7 +33,7 @@ optimal5 = []
 [dependencies]
 primality.workspace = true
 # Using rand 0.8 stable instead of 0.9 beta
-rand = "0.8"
+rand = "0.10"
 tokio.workspace = true
 futures.workspace = true
 itertools.workspace = true
