@@ -43,7 +43,7 @@ jobs:
           manylinux: auto # builds manylinux wheels on Linux (compatible with most distros)
 
       - name: Upload wheels as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-${{ matrix.os }}
           path: fbool-py/dist
@@ -68,7 +68,7 @@ jobs:
           target: aarch64-apple-darwin
           args: --release --out dist
       - name: Upload wheels as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-macos-arm64
           path: fbool-py/dist
@@ -94,7 +94,7 @@ jobs:
           args: --release --out dist
           manylinux: auto
       - name: Upload wheels as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-linux-arm64
           path: fbool-py/dist
